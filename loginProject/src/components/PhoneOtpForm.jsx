@@ -41,6 +41,7 @@ const PhoneOtpForm = () => {
         <div>
           <p>Enter OTP sent to {phoneNumber}</p>
           <OtpInput length={4} onOtpSubmit={onOtpSubmit}/>
+          
         </div>
       )}
 

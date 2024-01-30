@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 const OtpInput = ({length=4,onOtpSubmit=()=>{}}) => {
   const [otp, setOtp] = useState(new Array(length).fill(""));
+  const [isOtpSuccess, setIsOtpSuccess] = useState(false);
   const inputRefs = useRef([]); // to directly type the otp instead of going and clicking and we are using array to ref alll 4 of them
 
   useEffect(() => {
@@ -22,9 +23,11 @@ const OtpInput = ({length=4,onOtpSubmit=()=>{}}) => {
     console.log(newOtp,"NEWOTP");
     //submit trigger 
     const combinedOtp = newOtp.join("") // we used newOtp and not setOtp because setOtp is async and maybe not be updated
-    if(combinedOtp.length === length){
-      console.log(combinedOtp,"COMBINEOTP");
-      onOtpSubmit(combinedOtp)
+    if (combinedOtp.length === length) {
+      onOtpSubmit(combinedOtp);
+      setIsOtpSuccess(true);
+    } else {
+      setIsOtpSuccess(false);
     }
     // Move to next input if current field is filled
       if(value && index<length-1 && inputRefs.current[index + 1]){  // value(to check value is  present in the input field)  index<length-1 (checks that input stays within the 4 input fields) inputRefs.current[index + 1](checks if the next input field is available)
@@ -50,6 +53,7 @@ const OtpInput = ({length=4,onOtpSubmit=()=>{}}) => {
     <>
       {otp.map((value,index) => {
         return(
+          <>
           <input
             key={index}
             type="text"
@@ -60,8 +64,11 @@ const OtpInput = ({length=4,onOtpSubmit=()=>{}}) => {
             onKeyDown={(e)=> handleKeyDown(index,e)}
             className='otpInput'
             />
+          
+          </>
         )
       })}
+        {isOtpSuccess && <p>the OTP entered has been successful {otp}</p>}
     </>
   )
 }
